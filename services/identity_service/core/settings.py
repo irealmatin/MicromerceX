@@ -147,4 +147,4 @@ SIMPLE_JWT = {
 }
 
 
-GEOIP_PATH = os.path.join(BASE_DIR, 'geo')
+# GEOIP_PATH = os.path.join(BASE_DIR, 'geo')
