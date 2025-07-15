@@ -35,3 +35,9 @@ class SellerAplicationView(APIView):
         profile.save()
 
         return Response({"message": "Your application to become a seller has been submitted successfully."}, status=status.HTTP_200_OK)
+    
+
+from django.http import JsonResponse
+
+def test_view(request):
+    return JsonResponse({'message': 'API is working!'})
