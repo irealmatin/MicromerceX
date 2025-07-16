@@ -13,19 +13,35 @@ from .models import User
 
 
 class RegisterView(generics.CreateAPIView):
+    """
+    API endpoint for user registration.
+    """
     queryset = get_user_model().objects.all()
     permission_classes = (AllowAny,)
     serializer_class = UserRegisterSerializer
 
 
 class MyTokenObtainPairView(TokenObtainPairView):
+    """
+    API endpoint for obtaining JWT tokens with custom claims.
+    """
     serializer_class = MyTokenObtainPairSerializer
 
 
 class SellerAplicationView(APIView):
+    """API endpoint for submitting seller applications.
+    """
     permission_classes = [IsAuthenticated]
 
     def post(self , request , *args , **kwargs):
+        """Handle seller application submission.
+        
+        Args:
+            request: HttpRequest with user context.
+            
+        Returns:
+            Response: Success or error message with appropriate status code."""
+        
         user = request.user
         if user.role in [User.Role.SELLER, User.Role.ADMIN]:
             return Response({"message": "You are already a seller or admin."}, status=status.HTTP_400_BAD_REQUEST)
@@ -37,7 +53,3 @@ class SellerAplicationView(APIView):
         return Response({"message": "Your application to become a seller has been submitted successfully."}, status=status.HTTP_200_OK)
     
 
-from django.http import JsonResponse
-
-def test_view(request):
-    return JsonResponse({'message': 'API is working!'})

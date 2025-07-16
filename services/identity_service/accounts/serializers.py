@@ -6,6 +6,9 @@ from rest_framework import serializers
 User = get_user_model()
 
 class UserRegisterSerializer(serializers.ModelSerializer):
+    """
+    Serializer for user registration with password handling.
+    """
     password = serializers.CharField(write_only=True)
     class Meta:
         model = User
@@ -24,6 +27,9 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 # -------------------------------------------------------------------
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    """
+    Custom token serializer adding user role and username to token payload.
+    """
     
     @classmethod
     def get_token(cls,user):

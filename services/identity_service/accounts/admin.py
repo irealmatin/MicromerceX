@@ -5,11 +5,18 @@ from .models import User , UserProfile
 
 
 class SellerApplicantFilter(admin.SimpleListFilter):
+    """
+    Admin filter for users with seller applications.
+    """
     title = "seller application status"
     parameter_name = "is_seller_applicant"
 
     def lookups(self, request, model_admin):
-        """show the filter choice"""
+        """Define available filter options.
+        
+        Returns:
+            tuple: (value, human-readable label) pairs.
+        """
         return (
             ('yes', 'Has Application'),
         )
@@ -28,6 +35,13 @@ class SellerApplicantFilter(admin.SimpleListFilter):
 
 @admin.action(description="Approve selected users as sellers")
 def approve_as_seller(modeladmin, request, queryset):
+    """Admin action to approve users as sellers.
+    
+    Args:
+        modeladmin: ModelAdmin instance.
+        request: HttpRequest object.
+        queryset: Selected User objects to approve.
+    """
     updated_count = queryset.update(role=User.Role.SELLER)
 
     #update field in profile
@@ -38,6 +52,9 @@ def approve_as_seller(modeladmin, request, queryset):
    
 
 class CustomUserAdmin(UserAdmin):
+    """
+    Custom User admin interface with seller management features.
+    """
     list_display = ('username', 'email', 'role', 'is_staff')
     list_filter = (SellerApplicantFilter,'role', 'is_staff', 'is_superuser')
     actions = [approve_as_seller]
